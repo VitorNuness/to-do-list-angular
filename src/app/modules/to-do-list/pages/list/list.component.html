@@ -1,0 +1,45 @@
+@if (!getListItems().length){
+<div class="container">
+  @if (addItem()) {
+  <button class="btn btn-primary" (click)="addItem.set(false)">
+    Crie uma lista de tarefas
+  </button>
+  } @else {
+  <app-input-add-item
+    [inputListItems]="getListItems()"
+    (outputAddListItems)="getInputAndAddItem($event)"
+  />
+  }
+</div>
+} @else {
+<app-input-add-item
+  [inputListItems]="getListItems()"
+  (outputAddListItems)="getInputAndAddItem($event)"
+/>
+
+<main class="container">
+  @if(listItemsStage('pending').length) {
+  <h2>Pendentes</h2>
+  <app-input-list-item
+    [inputListItems]="listItemsStage('pending')"
+    (outputUpdateItemCheckbox)="updateItemCheckbox($event)"
+    (outputUpdateItemText)="updateItemText($event)"
+    (outputDeleteItem)="deleteItem($event)"
+  />
+  } @if(listItemsStage('completed').length) {
+  <h2>Concluídas</h2>
+  <app-input-list-item
+    [inputListItems]="listItemsStage('completed')"
+    (outputUpdateItemCheckbox)="updateItemCheckbox($event)"
+    (outputUpdateItemText)="updateItemText($event)"
+    (outputDeleteItem)="deleteItem($event)"
+  />
+  }
+</main>
+
+<footer>
+  <button class="btn btn-danger" (click)="deleteAllItems()">
+    Remover todos
+  </button>
+</footer>
+}
